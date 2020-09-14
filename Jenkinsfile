@@ -1,9 +1,23 @@
 pipeline {
     agent any
+    environment { 
+        CC = """${sh(
+                returnStdout: true,
+                script: 'echo "clang"'
+            )}""" 
+        // Using returnStatus
+        EXIT_STATUS = """${sh(
+                returnStatus: true,
+                script: 'exit 1'
+            )}"""
+    }
     stages {
-        stage('Build') {
+        stage('Example') {
+            environment { 
+                DEBUG_FLAGS = '-g'
+            }
             steps {
-                sh 'echo "Hello World!"'
+                sh 'printenv'
             }
         }
     }
